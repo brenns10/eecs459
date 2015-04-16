@@ -31,7 +31,7 @@ class MiExperiment(Experiment):
             self.mutations = pickle.load(f)
 
         print('Initializing the storage...')
-        storage = Storage(self.expression.index)
+        storage = Storage(self.expression.columns)
 
         print('Precomputing entropy...')
         # Precompute the entropy for the two matrices.
@@ -39,7 +39,7 @@ class MiExperiment(Experiment):
                                                         domain=(0, 1, 2))
         self.mutation_entropy = mf.precompute_entropy(self.mutations,
                                                       domain=(0, 1))
-        self._params['gene'] = list(self.expression.columns)
+        self._params['gene'] = list(reversed(self.expression.columns))
 
     def task(self, config):
         gene = config[0]

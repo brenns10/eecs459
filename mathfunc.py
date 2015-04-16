@@ -108,7 +108,6 @@ def all_pairs_mutual_info(expression, mutations, expression_entropy,
     mm = pd.Series(name=gene, index=expression.columns)
 
     geneAidx = np.where(expression.columns == gene)[0][0]
-    done = 0
     for geneBidx in range(geneAidx):
         geneB = expression.columns[geneBidx]
         res = pairwise_mutual_info(expression, mutations, expression_entropy,
@@ -117,9 +116,7 @@ def all_pairs_mutual_info(expression, mutations, expression_entropy,
         em[geneB] = res[1]
         me[geneB] = res[2]
         mm[geneB] = res[3]
-        done += 1
-        if done % 1000 == 0:
-            print(done)
+
     final = pairwise_mutual_info(expression, mutations, expression_entropy,
                                  mutation_entropy, gene, gene)
     em[gene] = final
