@@ -13,13 +13,16 @@ import numpy as np
 
 from experiment import Experiment
 import mathfunc as mf
+from storage import Storage
+
+storage = None
 
 
 class MiExperiment(Experiment):
 
     def __init__(self):
+        global storage
         super().__init__()
-
         # CSV files to append after every trial finishes, in case of problems.
         self.csvee = 'data/ee.csv'
         self.csvmm = 'data/mm.csv'
@@ -36,6 +39,8 @@ class MiExperiment(Experiment):
             self.expression = pickle.load(f)
         with open('data/mutations.pickle', 'rb') as f:
             self.mutations = pickle.load(f)
+
+        storage = Storage(self.expression.index)
 
         # Precompute the entropy for the two matrices.
         self.expression_entropy = mf.precompute_entropy(self.expression,
@@ -67,18 +72,10 @@ class MiExperiment(Experiment):
 
     def result(self, retval):
         ee, em, me, mm = retval
-
-        # Store in data frames.
-        self.eedf[ee.name] = ee
-        self.emdf[em.name] = em
-        self.medf[me.name] = me
-        self.mmdf[mm.name] = mm
-
-        # Write out to CSVs so we have immediate storage as well.
-        self.append_series(ee.name, self.csvee, ee)
-        self.append_series(em.name, self.csvem, em)
-        self.append_series(me.name, self.csvem, me)
-        self.append_series(mm.name, self.csvmm, mm)
+        storage.store_ee(ee)
+        storage.store_em(em)
+        storage.store_me(me)
+        storage.store_mm(mm)
 
     def append_series(self, gene, fname, series):
         with open(fname, 'a') as f:
