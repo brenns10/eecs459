@@ -58,3 +58,7 @@ target/
 
 # Data files:
 data/*
+
+# IPython notebooks
+*.ipynb
+.ipynb_checkpoints
