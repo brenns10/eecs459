@@ -24,12 +24,16 @@ class MiExperiment(Experiment):
         global storage
         super().__init__()
         # Open the data files.
+        print('Opening expression and mutation pickles...')
         with open('data/expression.pickle', 'rb') as f:
             self.expression = pickle.load(f)
         with open('data/mutations.pickle', 'rb') as f:
             self.mutations = pickle.load(f)
+
+        print('Initializing the storage...')
         storage = Storage(self.expression.index)
 
+        print('Precomputing entropy...')
         # Precompute the entropy for the two matrices.
         self.expression_entropy = mf.precompute_entropy(self.expression,
                                                         domain=(0, 1, 2))
