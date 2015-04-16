@@ -110,14 +110,14 @@ def expression(filename='data/cosmic/CosmicCompleteGeneExpression.tsv',
 def expval(string):
     """Convert a string representation of expression into a numeric value."""
     if string == 'under':
-        return -1
-    elif string == 'over':
-        return 1
-    elif string == 'normal':
         return 0
+    elif string == 'over':
+        return 2
+    elif string == 'normal':
+        return 1
     else:
         print('ERROR: Bad expression value!')
-        return 0
+        return 1
 
 
 def deduplicate_expression(ex_vals, patientset, geneset):

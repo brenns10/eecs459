@@ -76,7 +76,7 @@ have the following:
 
 Both the somatic mutations and the gene expression are expressed in a matrix,
 with rows as patients and columns as genes.  The somatic mutations are a matrix
-of booleans, while the gene expressions are a matrix of integers (-1, 0, and 1
+of booleans, while the gene expressions are a matrix of integers (0, 1, and 2
 for under, normal, and over -expressed respectively).
 
 The following files should be produced by my data processing program:
