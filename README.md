@@ -86,3 +86,49 @@ The following files should be produced by my data processing program:
 * `data/expression.pickle` containing the gene expression matrix
 * `data/patients.txt` containing a list of patients
 * `data/genes.txt` containing a list of genes
+
+### Reproducing
+
+If you have the data in the correct places above, you should be able to simply
+run `./process.py`, and you will get the expression and mutations dataframes.
+
+
+Pairwise Mutual Information
+---------------------------
+
+### Math Functions
+
+The definitions for the major functions in computing pairwise mutual information
+are all in `mathfunc.py`.  I copied the implementations from my `tcga` module
+and modified them as necessary.
+
+### Experiment
+
+I have an experiment class, which I use for doing highly parallel tasks in which
+you only need to vary parameters.  I copied that class into `experiment.py`
+(again, from my TCGA module).
+
+### Mutual Information Computation
+
+To compute pairwise mutual information, I subclassed `Experiment` to
+`MiExperiment` in `mi_computation.py`.  This uses the math functions to do all
+pairs mutual information.  Then, it stores the mutual information values it
+computed, both into a CSV and into a DataFrame.
+
+There's a bit of a hack in order to make this all work.  The way I stored the
+results is a bit funky -- theres a `storage.py` module that has a class which
+will store each batch of data as it comes in.  This is because if I didn't I
+would have to copy all these DataFrames into each process, and it would have
+been awful (200GB of memory, anyone?).
+
+### Results
+
+The results I got were ultimately:
+
+* `data/ee.csv`: expression-expression pairs
+* `data/em.csv`: expression-mutation pairs
+* `data/me.csv`: mutation-expression pairs
+* `data/mm.csv`: mutation-mutation pars
+
+The process crashed before I could pickle the DataFrames.  Which actually wasn't
+the worst thing to do.
