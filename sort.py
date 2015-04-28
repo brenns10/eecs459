@@ -7,11 +7,11 @@ import pandas as pd
 def sort(fname, outcsv, outdf):
 
     print('Reading CSV')
-    series = pd.read_csv(fname, index_col=[0, 1], sequeeze=True,
+    series = pd.read_csv(fname, index_col=[0, 1], squeeze=True,
                          skipinitialspace=True, header=None)
 
     print('Sorting Series')
-    series.sort()  # in-place
+    series.sort(ascending=False)  # in-place
 
     print('Saving Series as CSV')
     series.to_csv(outcsv)
