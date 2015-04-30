@@ -123,6 +123,13 @@ been awful (200GB of memory, anyone?).
 
 ### Results
 
+The code to get everything computing was:
+
+```python
+experiment = MiExperiment()
+experiment.run()  # nproc=24 is a good idea
+```
+
 The results I got were ultimately:
 
 * `data/ee.csv`: expression-expression pairs
@@ -132,3 +139,26 @@ The results I got were ultimately:
 
 The process crashed before I could pickle the DataFrames.  Which actually wasn't
 the worst thing to do.
+
+
+Filtering Pairs
+---------------
+
+The downside of having just CSV's was that I had to parse them, and filter them.
+I did a bit of research to determine the right combination of parameters to
+`pd.read_csv()` would get me a nice Series that I could sort.  That code went
+into `sort.py`.
+
+The Series representation was nice, and useful for `mm` and `ee` datasets.  But
+the `em` and `me` datasets are actually the same data (just different sections
+of it), and needed to be combined back into a 15740 by 15740 matrix again.  To
+do that, I used `Series.unstack()` from Pandas (it's glorious) to get the
+underlying dataframe for each.  Then, I did the transpose of `em` to get `emt`.
+Then, for each column I used the Pandas `join()` function to update the `me`
+dataframe with values from `emt`.  Thus, I had a full matrix of expression to
+mutation mutual information.  Then, I `stack()`'d them again, outputted to a
+CSV, sorted, and did a top 0.05% cutoff.
+
+My first network is the top 0.05% of the pairs.  It is directed and only
+includes E-M edges.  I need to include M-E edges, but I'm not sure how I will
+represent that within the graph yet.
