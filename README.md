@@ -162,3 +162,15 @@ CSV, sorted, and did a top 0.05% cutoff.
 My first network is the top 0.05% of the pairs.  It is directed and only
 includes E-M edges.  I need to include M-E edges, but I'm not sure how I will
 represent that within the graph yet.
+
+
+Permutation Test
+----------------
+
+In order to have a better cutoff, I did a permutation test to determine what
+mutual information values are significant.  I created a `DiscreteRandomVariable`
+class, and wrote a function that gets an average distribution for expression and
+mutations, and then samples that a lot to get the distribution of mutual
+information.  I fit an exponential model to that, and got the cutoff for a
+P-value of 0.05/247747600, applying the Bonferroni correction.  That cutoff
+value was 0.019523410122810361.
